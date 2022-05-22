@@ -10,7 +10,7 @@ class Othello():
             if(i == 28 or i == 37 or i == 45  or i==38 or i==39 or i==44):
                 self.__board[i] = 'X'
                 continue
-            if(i == 29 or i == 36 or i == 21 or i == 13 or i==30):
+            if(i == 29 or i == 36 or i == 21 or i == 13 or i==30 or i==46 or i==55):
                 self.__board[i] = 'O'
                 continue
             self.__board[i] = ' '
@@ -80,9 +80,9 @@ class Othello():
             posicion = int(input("Digite otra posicion"))
 
     def validate_rules(self, pos, move):
-        #return self.validate_col(pos, move)
-        #return self.validate_row(pos,move)
-        return self.validate_diag(pos,move)
+        result=(self.validate_col(pos, move),self.validate_row(pos,move),self.validate_diag(pos,move))
+        
+        return any(result)
 
 
     def validate_col(self, pos, move):
@@ -187,7 +187,7 @@ class Othello():
             while cont < (pos + self.__board_size):
                 if self.__board[cont] == move:
                     break
-                self.__board[cont] = 'K'
+                self.__board[cont] = move
                 cont += 1
             return True
         if flagRight: 
@@ -203,42 +203,77 @@ class Othello():
 
 
     def validate_diag(self, pos, move):
-        isRight = False
-        isLeft = False
-        isCornerTop=False
-        isCornerLow=False
+        
+        isCorner=False
         isBorder=False
-        #no esta en los bordes del tablero 
-        if pos not in self.__border["Left"] and pos not in self.__border["Right"] and pos not in self.__border["Top"] and pos not in self.__border["Low"]:
-            if(self.__board[pos-(self.__board_size+1)] == ' ' and self.__board[pos+(self.__board_size+1)] == ' ' or self.__board[pos-(self.__board_size+1)] == move or self.__board[pos+(self.__board_size+1)] == move):
-                isBorder=False
-                
-                #return False
-        else:
-            
-            #esta en algun borde del tablero
-            isBorder=True
-            #esta en los bordes y es una esquina
-            if(pos in self.__border["Left"] and pos in self.__border["Top"] or
-               pos in self.__border["Right"] and pos in self.__border["Top"] or
-               pos in self.__border["Left"] and pos in self.__border["Low"] or
-               pos in self.__border["Right"] and pos in self.__border["Low"]):
-                pass
-            # if pos in self.__border["Left"]:
-            #     isLeft = True
-            #     if(self.__board[pos+1] == ' ' or self.__board[pos+1] == move):
-            #         return False
-            # else:
-            #     isRight = True
-            #     if(self.__board[pos-1] == ' ' or self.__board[pos-1] == move):
-            #         return False
-       
+
         flagLeftTop=False
         flagLeftLow=False
         flagRightTop=False
         flagRightLow=False
-        
-        
+        #no esta en los bordes del tablero 
+        if pos not in self.__border["Left"] and pos not in self.__border["Right"] and pos not in self.__border["Top"] and pos not in self.__border["Low"]:
+            if(self.__board[pos-(self.__board_size+1)] == ' ' and self.__board[pos+(self.__board_size+1)] == ' ' or self.__board[pos-(self.__board_size+1)] == move or self.__board[pos+(self.__board_size+1)] == move):
+                isBorder=False
+            
+                #return False
+        else:
+            
+            
+            #esta en algun borde del tablero
+            isBorder=True
+            #esta en los bordes y es una esquina
+            #esquina superiot izquierda 
+            if(pos in self.__border["Left"] and pos in self.__border["Top"]):
+                isCorner=True
+                if(self.__board[pos+(self.__board_size+1)] == ' ' or  self.__board[pos+(self.__board_size+1)] == move):
+                    return False
+                #diagonal derecha inferior
+                cont = pos + (self.__board_size+1)
+                while cont  not in self.__border["Left"] and cont <self.__board_size:
+                    if self.__board[cont] == move:
+                        flagRightLow = True
+                        break
+                    cont += (self.__board_size+1)
+
+            elif(pos in self.__border["Left"] and pos in self.__border["Low"]):
+                if(self.__board[pos-(self.__board_size-1)] == ' ' or  self.__board[pos-(self.__board_size-1)] == move):
+                    return False
+                isCorner=True
+                #diagonal derecha superior
+                cont = pos - (self.__board_size-1)
+                while cont  not in self.__border["Left"] and cont >1:
+                    if self.__board[cont] == move:
+                        flagRightTop = True
+                        break
+                    cont -= (self.__board_size-1)
+            elif(pos in self.__border["Right"] and pos in self.__border["Top"]):
+                isCorner=True
+                if(self.__board[pos+(self.__board_size-1)] == ' ' or  self.__board[pos+(self.__board_size-1)] == move):
+                    return False
+                #diagonal izquierda inferior
+                cont = pos + (self.__board_size-1)
+                while cont not in self.__border["Right"] and cont < (self.__board_size * self.__board_size) :
+                    print("esquina inferior izquierda ",cont)
+                    if self.__board[cont] == move:
+                        
+                        flagLeftLow = True
+                        break
+                    cont += (self.__board_size-1)
+            elif(pos in self.__border["Right"] and pos in self.__border["Low"]):
+                isCorner=True
+                if(self.__board[pos-(self.__board_size+1)] == ' ' or  self.__board[pos-(self.__board_size+1)] == move):
+                    return False
+                # diagonal izquierda superior
+                cont = pos - (self.__board_size+1)
+                while cont not in self.__border["Right"] and cont >1 :
+                    if self.__board[cont] == move:
+                        
+                        flagLeftTop = True
+                        break
+                    cont -= (self.__board_size+1)            
+            
+    
         # Buscar diagonalmente en 4 direcciones
         if isBorder == False:
             # diagonal izquierda superior
