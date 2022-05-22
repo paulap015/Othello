@@ -7,7 +7,7 @@ class Othello():
 
     def init_board(self):
         for i in range(1, (self.__board_size*self.__board_size)+1):
-            if(i == 28 or i == 37 or i == 45 or i == 53):
+            if(i == 28 or i == 37 or i == 45  or i==38 or i==39):
                 self.__board[i] = 'X'
                 continue
             if(i == 29 or i == 36 or i == 21 or i == 13):
@@ -80,7 +80,8 @@ class Othello():
             posicion = int(input("Digite otra posicion"))
 
     def validate_rules(self, pos, move):
-        return self.validate_col(pos, move)
+        #return self.validate_col(pos, move)
+        return self.validate_row(pos,move)
 
     def validate_col(self, pos, move):
         isTop = False
@@ -137,9 +138,64 @@ class Othello():
         return False
 
     def validate_row(self, pos, move):
-        if(self.__board[pos+1] == ' ' and self.__board[pos-1] == ' '):
-            return False
-        return True
+        print("entra al metodo")
+        isRight = False
+        isLeft = False
+        
+        if pos not in self.__border["Left"] and pos not in self.__border["Right"]:
+            if(self.__board[pos-1] == ' ' and self.__board[pos+1] == ' ' or self.__board[pos-1] == move or self.__board[pos+1] == move):
+                return False
+        else:
+            if pos in self.__border["Left"]:
+                isLeft = True
+                if(self.__board[pos+1] == ' ' or self.__board[pos+1] == move):
+                    return False
+            else:
+                isRight = True
+                if(self.__board[pos-1] == ' ' or self.__board[pos-1] == move):
+                    return False
+       
+        flagLeft=False
+        flagRight=False
+        
+        # Buscar hacia la derecha
+        if isRight == False:
+            
+            cont = pos + 1
+            while cont < (pos + self.__board_size ):
+                if self.__board[cont] == move:
+                    flagLeft = True
+                    break
+                cont += 1
+        # Buscar hacia la izquierda
+        if isLeft == False:
+            cont = pos - 1
+            while cont > (pos -self.__board_size):
+                if self.__board[cont] == move:
+                    flagRight = True
+                    break
+                cont -= 1
+        
+        ##pintar lascasillas
+        if flagLeft: 
+            cont = pos + 1
+            while cont < (pos + self.__board_size):
+                if self.__board[cont] == move:
+                    break
+                self.__board[cont] = move
+                cont += 1
+            return True
+        if flagRight: 
+            cont = pos - 1
+            while cont > (pos - self.__board_size):               
+                if self.__board[cont] == move:
+                    break
+                self.__board[cont] = move
+                cont -= 1
+            return True
+        print("llega al final")
+        return False
+
 
     def validate_diag(self, pos, move):
         if(self.__board[pos-(self.__board_size+1)] == ' ' and self.__board[pos+(self.__board_size+1)]):

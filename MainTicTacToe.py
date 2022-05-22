@@ -16,4 +16,4 @@ for i in range(1, 65):
     print("|{:>3}|".format(i), end=' ')
     if i % 8 == 0:
         print()
-t.insert_move(5, 'O')
+t.insert_move(40, 'O')
