@@ -7,10 +7,10 @@ class Othello():
 
     def init_board(self):
         for i in range(1, (self.__board_size*self.__board_size)+1):
-            if(i == 28 or i == 37 or i == 45  or i==38 or i==39 or i==44):
+            if(i == 28 or i == 37 ):
                 self.__board[i] = 'X'
                 continue
-            if(i == 29 or i == 36 or i == 21 or i == 13 or i==30 or i==46 or i==55):
+            if(i == 29 or i == 36 or i == 30 or i == 31  ):
                 self.__board[i] = 'O'
                 continue
             self.__board[i] = ' '
@@ -140,12 +140,13 @@ class Othello():
         return False
 
     def validate_row(self, pos, move):
-        print("entra al metodo")
+        
         isRight = False
         isLeft = False
         
         if pos not in self.__border["Left"] and pos not in self.__border["Right"]:
             if(self.__board[pos-1] == ' ' and self.__board[pos+1] == ' ' or self.__board[pos-1] == move or self.__board[pos+1] == move):
+               
                 return False
         else:
             if pos in self.__border["Left"]:
@@ -199,6 +200,7 @@ class Othello():
                 cont -= 1
             return True
         
+        
         return False
 
 
@@ -213,10 +215,16 @@ class Othello():
         flagRightLow=False
         #no esta en los bordes del tablero 
         if pos not in self.__border["Left"] and pos not in self.__border["Right"] and pos not in self.__border["Top"] and pos not in self.__border["Low"]:
-            if(self.__board[pos-(self.__board_size+1)] == ' ' and self.__board[pos+(self.__board_size+1)] == ' ' or self.__board[pos-(self.__board_size+1)] == move or self.__board[pos+(self.__board_size+1)] == move):
-                isBorder=False
-            
-                #return False
+            diagVacios = (self.__board[pos-(self.__board_size+1)] == ' ' and self.__board[pos+(self.__board_size+1)] == ' ' , self.__board[pos+(self.__board_size-1)] == ' ' and self.__board[pos-(self.__board_size-1)] == ' ')
+            if(
+            not any(diagVacios) or 
+            self.__board[pos-(self.__board_size+1)] == move or self.__board[pos+(self.__board_size+1)] == move
+            or self.__board[pos+(self.__board_size-1)] == move or self.__board[pos-(self.__board_size-1)] == move
+            ):
+                
+                
+                return False
+            isBorder=False
         else:
             
             
@@ -225,6 +233,7 @@ class Othello():
             #esta en los bordes y es una esquina
             #esquina superiot izquierda 
             if(pos in self.__border["Left"] and pos in self.__border["Top"]):
+                
                 isCorner=True
                 if(self.__board[pos+(self.__board_size+1)] == ' ' or  self.__board[pos+(self.__board_size+1)] == move):
                     return False
@@ -237,6 +246,7 @@ class Othello():
                     cont += (self.__board_size+1)
 
             elif(pos in self.__border["Left"] and pos in self.__border["Low"]):
+                
                 if(self.__board[pos-(self.__board_size-1)] == ' ' or  self.__board[pos-(self.__board_size-1)] == move):
                     return False
                 isCorner=True
@@ -248,12 +258,14 @@ class Othello():
                         break
                     cont -= (self.__board_size-1)
             elif(pos in self.__border["Right"] and pos in self.__border["Top"]):
+                
                 isCorner=True
                 if(self.__board[pos+(self.__board_size-1)] == ' ' or  self.__board[pos+(self.__board_size-1)] == move):
                     return False
                 #diagonal izquierda inferior
                 cont = pos + (self.__board_size-1)
                 while cont not in self.__border["Right"] and cont < (self.__board_size * self.__board_size) :
+                    
                     print("esquina inferior izquierda ",cont)
                     if self.__board[cont] == move:
                         
@@ -261,6 +273,7 @@ class Othello():
                         break
                     cont += (self.__board_size-1)
             elif(pos in self.__border["Right"] and pos in self.__border["Low"]):
+                
                 isCorner=True
                 if(self.__board[pos-(self.__board_size+1)] == ' ' or  self.__board[pos-(self.__board_size+1)] == move):
                     return False
@@ -276,6 +289,7 @@ class Othello():
     
         # Buscar diagonalmente en 4 direcciones
         if isBorder == False:
+            
             # diagonal izquierda superior
             cont = pos - (self.__board_size+1)
             while cont not in self.__border["Right"] and cont >1 :
@@ -344,5 +358,6 @@ class Othello():
                 self.__board[cont] = move
                 cont += (self.__board_size+1)
             #return True
+        print(f'left low {flagLeftLow} left top {flagLeftTop} r t { flagLeftTop} rl {flagRightLow} ')
         result = (flagLeftLow,flagLeftTop,flagRightTop,flagRightLow)
         return any(result)
