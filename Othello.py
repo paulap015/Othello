@@ -17,10 +17,10 @@ class Othello():
 
     def init_board(self):
         for i in range(1, (self.__board_size*self.__board_size)+1):
-            if(i == 28 or i == 37 or i==14 or i==11 or i==27 or i==19 or i==10 or i==2 or i ==3 or i==4):
+            if(i == 28 or i == 37 or i==2 or i==11 or i==20 or i==29 or i==21):
                 self.__board[i] = 'X'
                 continue
-            if(i == 29 or i == 36 or i == 30 or i == 31  or i==26 or i==46 or i==5):
+            if(i == 29 or i == 36 or i==19 or i==27 or i==28 or i==37 or i==46):
                 self.__board[i] = 'O'
                 continue
             self.__board[i] = ' '
@@ -78,6 +78,7 @@ class Othello():
 
         if(self.__board[pos] == ' '):
             if(self.validate_rules(pos, move, False)):
+
                 print()
                 self.__board[pos] = move
                 self.print_board()
@@ -187,7 +188,8 @@ class Othello():
         if isLeft == False:
             cont = pos - 1
             if self.__board[cont] != move:
-                while cont not in self.__border["Right"]:
+                while cont not in self.__border["Right"] :
+                    print("CONT POS", cont," " ,pos ," mov : ", move)
                     if self.__board[cont] == move:
                         flagLeft = True
                         break
