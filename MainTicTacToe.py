@@ -21,25 +21,23 @@ def testBoard():
 def move_ia():
     max_score = -1000
     best_move = 0
-    copy_board = copy.deepcopy(t.getBoard())
-    copy_2 = copy.deepcopy(copy_board)
-    for key in copy_board.keys():
-        if copy_board[key] == ' ' and t.validate_rules(key, movIa, True):
+
+    for key in t.getBoard().keys():
+        if t.getBoard()[key] == ' ' and t.validate_rules(key, movIa, True):
             print("key: " + str(key))
-            copy_board[key] = movIa
-            score = minmax(copy_board, 3, False)
-            copy_board[key] = ' '
+            t.getBoard()[key] = movIa
+            score = minmax(t.getBoard(), 3, False)
+            t.getBoard()[key] = ' '
             if score > max_score:
                 max_score = score
                 best_move = key
-            
+
     return best_move
 
 # MinMax
 
 
 def minmax(board, depth, isMax):
-    print("entra minimax")
     if t.fullBoard() or depth == 0:
         return 0
     if isMax:
@@ -55,16 +53,12 @@ def minmax(board, depth, isMax):
 
     else:
         best_score = 800
+        print("Value: ", board[10])
         for key in board.keys():
-            
             if board[key] == ' ' and t.validate_rules(key, movHuman, True):
-                print("Key human : ",key)
-                board[key] = movHuman
-                score = minmax(board, depth-1, True)
-                board[key] = ' '
-                if score < best_score:
-                    best_score = score
-        return best_score
+                print('Key Human', key)
+        return 0
+
 
 def ia(mov):
     pos = move_ia()
@@ -79,18 +73,9 @@ def human(mov):
 
 movHuman = 'O'  # Negro
 movIa = 'X'  # Blanco
-# while t.fullBoard() == False:
-# #    t.print_board()
-#    print()
-#    testBoard()
-#    human(movHuman)    
-#    ia(movIa)
-
-
-# 20
-
-testBoard()
-print()
-t.print_board()
-print()
-move_ia()
+while t.fullBoard() == False:
+    t.print_board()
+    print()
+    testBoard()
+    human(movHuman)
+    ia(movIa)
