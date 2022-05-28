@@ -26,7 +26,7 @@ def move_ia():
         if t.getBoard()[key] == ' ' and t.validate_rules(key, movIa, True):
             print("key: " + str(key))
             t.getBoard()[key] = movIa
-            score = minmax(t.getBoard(), 3, False)
+            score = minmax(t.getBoard(), 4, False)
             t.getBoard()[key] = ' '
             if score > max_score:
                 max_score = score
@@ -53,11 +53,14 @@ def minmax(board, depth, isMax):
 
     else:
         best_score = 800
-        print("Value: ", board[10])
         for key in board.keys():
             if board[key] == ' ' and t.validate_rules(key, movHuman, True):
-                print('Key Human', key)
-        return 0
+                board[key] = movHuman
+                score = minmax(board, depth-1, True)
+                board[key] = ' '
+                if score < best_score:
+                    best_score = score
+        return best_score
 
 
 def ia(mov):

@@ -179,7 +179,7 @@ class Othello():
         if isRight == False:
             cont = pos + 1
             if self.__board[cont] != move:
-                while cont not in self.__border["Left"]:
+                while cont not in self.__border["Left"] and cont < 65:
                     if self.__board[cont] == move:
                         flagRight = True
                         break
