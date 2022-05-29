@@ -25,8 +25,9 @@ def move_ia():
     for key in t.getBoard().keys():
         if t.getBoard()[key] == ' ' and t.validate_rules(key, movIa, True):
             print("key: " + str(key))
+            
             t.getBoard()[key] = movIa
-            score = minmax(t.getBoard(), 4, False)
+            score = minmax(t.getBoard(), 3, False)
             t.getBoard()[key] = ' '
             if score > max_score:
                 max_score = score
@@ -80,5 +81,9 @@ while t.fullBoard() == False:
     t.print_board()
     print()
     testBoard()
+    print("fichas antes movHuman ", t.contarFichas(movHuman))
     human(movHuman)
+    print("fichas despues movHuman ", t.contarFichas(movHuman))
+    print("fichas antes IA  ", t.contarFichas(movIa))
     ia(movIa)
+    print("fichas despues IA", t.contarFichas(movIa))

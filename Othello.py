@@ -9,6 +9,13 @@ class Othello():
     def getBoard(self):
         return self.__board
 
+    def contarFichas(self,ficha):
+        cont =0
+        for pos in range (1, self.__board_size * self.__board_size +1):
+            if self.__board[pos] == ficha:
+                cont = cont +1
+        return cont
+
     def fullBoard(self):
         for key in self.__board.keys():
             if self.__board[key] == ' ':
