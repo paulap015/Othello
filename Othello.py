@@ -7,7 +7,7 @@ class Othello():
     
 
     def getBoard(self):
-        return self.__board;
+        return self.__board
 
     def fullBoard(self):
         for key in self.__board.keys():
@@ -17,10 +17,10 @@ class Othello():
 
     def init_board(self):
         for i in range(1, (self.__board_size*self.__board_size)+1):
-            if(i == 28 or i == 37 or i==2 or i==11 or i==20 or i==29 or i==21):
+            if(i == 28 or i == 37 or i==2 or i==11 or i==20 or i==29 or i==21 or i==19 or i==21 or i==22 or i==23):
                 self.__board[i] = 'X'
                 continue
-            if(i == 29 or i == 36 or i==19 or i==27 or i==28 or i==37 or i==46):
+            if(i == 29 or i == 36 or i==19 or i==27 or i==28 or i==37 or i==46 or i==17):
                 self.__board[i] = 'O'
                 continue
             self.__board[i] = ' '
@@ -167,7 +167,7 @@ class Othello():
                 isLeft = True
                 if(self.__board[pos+1] == ' ' or self.__board[pos+1] == move):
                     return False
-            else:
+            elif pos in self.__border["Right"]:
                 isRight = True
                 if(self.__board[pos-1] == ' ' or self.__board[pos-1] == move):
                     return False
@@ -179,7 +179,7 @@ class Othello():
         if isRight == False:
             cont = pos + 1
             if self.__board[cont] != move:
-                while cont not in self.__border["Left"] and cont < 65:
+                while cont not in self.__border["Left"] and cont < 65 and self.__board[cont] != ' ':
                     if self.__board[cont] == move:
                         flagRight = True
                         break
@@ -188,7 +188,7 @@ class Othello():
         if isLeft == False:
             cont = pos - 1
             if self.__board[cont] != move:
-                while cont not in self.__border["Right"] and cont>0:
+                while cont not in self.__border["Right"] and cont>0 and self.__board[cont] != ' ' :
                     #print("CONT POS", cont," " ,pos ," mov : ", move)
                     if self.__board[cont] == move:
                         flagLeft = True
